@@ -1,17 +1,23 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Landing from "./assets/components/landing/Landing";
-import Login from "./assets/components/login/Login";
-import "./index.css";
-import "./assets/components/landing/landing.css";
-import "./assets/components/login/login.css";
+import ReactDOM from "react-dom/client";
+import Sidebar from "./componentsmain/sidebar/Sidebar";
+import Headers from "./componentsmain/mainchat/headers";
+import Chatbox from "./componentsmain/mainchat/chatbox";
 
-createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-    </Routes>
-  </BrowserRouter>
+const SIDEBAR_WIDTH = 260;
+
+const App = () => (
+  <div>
+    <Sidebar />
+    <Headers />
+    <Chatbox />
+    
+  </div>
+
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );

@@ -1,14 +1,19 @@
+
+
 import React from "react";
-import ReactDOM from "react-dom/client";
-import Sidebar from "./componentsmain/sidebar/Sidebar";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "./assets/components/landing/Landing";
+import Login from "./assets/components/login/Login";
+import "./index.css";
+import "./assets/components/landing/landing.css";
+import "./assets/components/login/login.css";
 
-// const App = () => (
-//   <div style={{ display: "flex" }}>
-//     <Sidebar />
-//     <div style={{ flex: 1, background: "#181818", minHeight: "100vh" }}>
-//       {/* Main content area */}a
-//     </div>
-//   </div>
-// );
-
-// export default App;
+createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
+  </BrowserRouter>
+);
