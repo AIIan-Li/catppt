@@ -65,7 +65,7 @@ const LeftSection = () => {
 
   return (
     <div className="landing-left">
-      <div className="landing-logo">ChatGPT</div>
+      <div className="landing-logo">Cat Phishing</div>
       <div className={`landing-prompt-outer ${slideUp ? "slide-up" : ""}`}>
         {showTop && (
           <div className="landing-prompt-top">

@@ -11,12 +11,9 @@ const RightSection = () => (
       </div>
       <div className="landing-tryfirst">Try it first</div>
     </div>
+    {/* Cat logo above the footer */}
     <div className="landing-logo-bottom">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/0/04/OpenAI_Logo.svg"
-        alt="OpenAI Logo"
-        className="landing-openai-logo"
-      />
+      <img src="/cat.png" alt="Cat Logo" className="cat-logo-bottom" />
     </div>
     <div className="landing-footer">
       <div>
