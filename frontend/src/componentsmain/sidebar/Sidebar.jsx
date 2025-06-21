@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Scrollbar from "./scrollbar";
+import sidebarIcon from "../../assets/images/newsidebaricon1.png"; // Import the icon
 
-// New: Header component for logo and button
+// Header component for logo and button
 const SidebarHeader = ({ open, setOpen }) => (
   <div
     style={{
@@ -55,8 +56,12 @@ const SidebarHeader = ({ open, setOpen }) => (
       aria-label={open ? "Close sidebar" : "Open sidebar"}
       tabIndex={0}
     >
-      {/* [pic] placeholder for open/close button image */}
-      <span style={{ color: "#fff", fontSize: 24 }}>[pic]</span>
+      {/* Use sidebaricon.png for open/close button */}
+      <img
+        src={sidebarIcon}
+        alt={open ? "Close sidebar" : "Open sidebar"}
+        style={{ width: 28, height: 28, objectFit: "contain" }}
+      />
     </button>
   </div>
 );
@@ -140,8 +145,12 @@ const Sidebar = () => {
           aria-label="Open sidebar"
           tabIndex={0}
         >
-          {/* [pic] placeholder for open button image */}
-          <span style={{ color: "#fff", fontSize: 24 }}>[pic]</span>
+          {/* Use sidebaricon.png for open button */}
+          <img
+            src={sidebarIcon}
+            alt="Open sidebar"
+            style={{ width: 28, height: 28, objectFit: "contain" }}
+          />
         </button>
       )}
     </aside>
