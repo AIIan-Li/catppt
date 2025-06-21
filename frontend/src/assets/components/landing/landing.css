@@ -1,0 +1,238 @@
+.landing-root {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.landing-left {
+  flex: 1.2;
+  background: #18102b;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 56px;
+  position: relative;
+}
+
+.landing-logo {
+  position: absolute;
+  top: 32px;
+  left: 48px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #e1d8fa;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #a084ca44;
+  z-index: 2;
+}
+
+.landing-logo-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;    /* Remove extra space below */
+  margin-top: 48px;    /* Push it further down */
+}
+
+.cat-logo-bottom {
+  width: 80px;         /* Bigger logo */
+  height: 80px;
+  margin-bottom: -360px; /* Small space above terms */
+  margin-top: 0;
+  opacity: 0.97;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.landing-prompt {
+  margin-top: 100px;
+}
+
+.landing-prompt-outer {
+  margin-top: 120px;
+  transition: transform 0.5s cubic-bezier(.4,2,.6,1), opacity 0.5s;
+  will-change: transform, opacity;
+}
+
+.slide-up {
+  transform: translateY(-60px);
+  opacity: 0;
+}
+
+.landing-prompt-top {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #d9aaff;
+  margin-bottom: 16px;
+  transition: opacity 0.4s;
+}
+
+.landing-prompt-bottom {
+  font-size: 2rem;
+  color: #d9aaff;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  min-height: 2.5rem;
+}
+
+.blinking-ball {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-left: 12px;
+  border-radius: 50%;
+  background: #d9aaff;
+  animation: blink 1s steps(1) infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.7; }
+}
+
+.landing-bullet {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 18px;
+  border-radius: 50%;
+  background: #d9aaff;
+  box-shadow: 0 2px 8px #a084ca44;
+}
+
+.fade-in-up {
+  opacity: 1;
+  transform: translateY(-20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.landing-title {
+  color: #d9aaff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.landing-animated {
+  font-size: 2rem;
+  color: #d9aaff;
+  opacity: 0.7;
+  margin-left: 36px;
+}
+
+.landing-right {
+  flex: 1;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.landing-getstarted {
+  margin-top: -80px;
+  text-align: center;
+}
+
+.landing-getstarted h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.landing-btn-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px; /* space between buttons */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.landing-btn {
+  background: rgb(49, 70, 225); /* blue */
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 56px;      /* thinner (less height), longer (more width) */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 16px #0a7cff22;
+  margin: 0 4px;
+  min-width: 180px;       /* longer */
+  height: 38px;           /* thinner */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-btn:hover {
+  background: #23263a; /* grayer, darker */
+  color: #fff;
+}
+
+.landing-btn-bubble {
+  border-radius: 999px;
+}
+
+.landing-tryfirst {
+  color: #fff;
+  opacity: 1;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+.landing-footer {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  opacity: 0.8;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.landing-footer-logo {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 4px;
+}
+
+.landing-footer-link {
+  color: #fff;
+  text-decoration: underline;
+  margin: 0 4px;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+  .landing-root {
+    flex-direction: column;
+  }
+  .landing-left, .landing-right {
+    flex: unset;
+    width: 100vw;
+    min-height: 50vh;
+    padding: 32px 16px;
+  }
+  .landing-footer {
+    position: static;
+    margin-top: 32px;
+  }
+}

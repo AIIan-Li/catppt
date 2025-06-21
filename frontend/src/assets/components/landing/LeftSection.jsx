@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-import "./assets/components/landing/landing.css";
+import "./landing.css";
 
-// PROMPTS
 const prompts = [
   ["Write a text", "asking a friend to be my plus-one at a wedding"],
   ["Brainstorm names", "for my fantasy football team"],
@@ -15,12 +12,10 @@ const prompts = [
 const TYPING_SPEED = 40;
 const PAUSE_AFTER_TYPING = 1200;
 
-// Blinking ball cursor for typing
-function BlinkingBallCursor({ show }) {
-  return show ? <span className="blinking-ball" /> : null;
+function BlinkingBallCursor() {
+  return <span className="blinking-ball" />;
 }
 
-// LEFT SECTION
 const LeftSection = () => {
   const [promptIndex, setPromptIndex] = useState(0);
   const [showTop, setShowTop] = useState(false);
@@ -34,9 +29,11 @@ const LeftSection = () => {
     setTyped("");
     setSlideUp(false);
 
+    // Show top line first
     const topTimeout = setTimeout(() => {
       setShowTop(true);
 
+      // Start typing after top line is shown
       typingTimeout.current = setTimeout(() => {
         setAnimating(true);
         let i = 0;
@@ -47,11 +44,12 @@ const LeftSection = () => {
             typingTimeout.current = setTimeout(typeChar, TYPING_SPEED);
           } else {
             setAnimating(false);
+            // Pause, then slide up and go to next prompt
             typingTimeout.current = setTimeout(() => {
               setSlideUp(true);
               setTimeout(() => {
                 setPromptIndex((prev) => (prev + 1) % prompts.length);
-              }, 500);
+              }, 500); // Slide up duration
             }, PAUSE_AFTER_TYPING);
           }
         }
@@ -77,7 +75,7 @@ const LeftSection = () => {
         {showTop && (
           <div className="landing-prompt-bottom">
             {typed}
-            <BlinkingBallCursor show={animating} />
+            {animating && <BlinkingBallCursor />}
           </div>
         )}
       </div>
@@ -85,36 +83,4 @@ const LeftSection = () => {
   );
 };
 
-// RIGHT SECTION
-const RightSection = () => (
-  <div className="landing-right">
-    <div className="landing-getstarted">
-      <h1>Get started</h1>
-      <div className="landing-btn-row">
-        <button className="landing-btn landing-btn-bubble">Log in</button>
-        <button className="landing-btn landing-btn-bubble">Sign up for free</button>
-      </div>
-      <div className="landing-tryfirst">Try it first</div>
-    </div>
-    <div className="landing-logo-bottom">
-      <img src="/cat.png" alt="Cat Logo" className="cat-logo-bottom" />
-    </div>
-    <div className="landing-footer">
-      <div>
-        <a href="#" className="landing-footer-link">Terms of use</a>
-        <span> | </span>
-        <a href="#" className="landing-footer-link">Privacy policy</a>
-      </div>
-    </div>
-  </div>
-);
-
-// LANDING PAGE
-const Landing = () => (
-  <div className="landing-root">
-    <LeftSection />
-    <RightSection />
-  </div>
-);
-
-createRoot(document.getElementById("root")).render(<Landing />);
+export default LeftSection;
