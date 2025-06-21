@@ -7,7 +7,8 @@ const RightSection = () => (
     <div className="landing-getstarted">
       <h1>Get started</h1>
       <div className="landing-btn-row">
-        <Link to="/login"><button className="landing-btn landing-btn-bubble">Log in</button></Link>
+        <Link to="/login"><button className="landing-btn landing-btn-bubble">
+          Log in</button></Link>
         <button className="landing-btn landing-btn-bubble">Sign up for free</button>
       </div>
       <div className="landing-tryfirst-row">
