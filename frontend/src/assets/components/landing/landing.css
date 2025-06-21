@@ -1,14 +1,16 @@
 .landing-root {
   display: flex;
+  flex-direction: row;
   min-height: 100vh;
   width: 100vw;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .landing-left {
-  flex: 1.2;
-  background: #18102b;
-  color: #fff;
+  flex: 1 1 0;
+  min-width: 320px;
+  max-width: 50vw;
+  background: #0a083a; /* dark blue/purple */
+  color: #e1d8fa;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,8 +129,10 @@
 }
 
 .landing-right {
-  flex: 1;
-  background: #000;
+  flex: 1 1 0;
+  min-width: 400px;
+  max-width: 50vw;
+  background: #111217; /* black */
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -162,22 +166,23 @@
   color: #fff;
   border: none;
   border-radius: 999px;
-  padding: 8px 56px;      /* thinner (less height), longer (more width) */
+  padding: 8px 0;             /* Remove horizontal padding */
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
   box-shadow: 0 2px 16px #0a7cff22;
   margin: 0 4px;
-  min-width: 180px;       /* longer */
-  height: 38px;           /* thinner */
+  min-width: 180px;
+  width: 180px;               /* Force same width */
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .landing-btn:hover {
-  background: #23263a; /* grayer, darker */
+  background: #1b3a71; /* grayer, darker */
   color: #fff;
 }
 
@@ -188,8 +193,31 @@
 .landing-tryfirst {
   color: #fff;
   opacity: 1;
-  font-size: 1rem;
+  font-size: 0.92rem;      /* smaller font */
   margin-top: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 0;          /* less vertical padding */
+  min-width: 110px;        /* smaller width */
+  width: 110px;
+  height: 28px;            /* smaller height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.landing-tryfirst:hover {
+  background: #23263a;
+  color: #fff;
+}
+
+.landing-tryfirst-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .landing-footer {

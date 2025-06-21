@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React from "react";
 import "./landing.css";
 
@@ -6,10 +7,12 @@ const RightSection = () => (
     <div className="landing-getstarted">
       <h1>Get started</h1>
       <div className="landing-btn-row">
-        <button className="landing-btn landing-btn-bubble">Log in</button>
+        <Link to="/login"><button className="landing-btn landing-btn-bubble">Log in</button></Link>
         <button className="landing-btn landing-btn-bubble">Sign up for free</button>
       </div>
-      <div className="landing-tryfirst">Try it first</div>
+      <div className="landing-tryfirst-row">
+        <div className="landing-tryfirst">Try it first</div>
+      </div>
     </div>
     {/* Cat logo above the footer */}
     <div className="landing-logo-bottom">

@@ -5,7 +5,7 @@ import "./landing.css";
 
 const Landing = () => (
   <div className="landing-root">
-    <div className="landing-logo">Cat Phishing</div>
+    <div className="login-header">CatPhiser</div>
     <LeftSection />
     <RightSection />
   </div>

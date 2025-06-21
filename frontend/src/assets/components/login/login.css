@@ -1,0 +1,230 @@
+.login-root {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  position: relative;
+}
+
+.login-header {
+  position: absolute;
+  top: 36px;
+  left: 48px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 1px;
+}
+
+.login-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  color: #111;
+  text-align: center;
+}
+
+.login-box {
+  background: #fff;
+  border-radius: 18px;
+  padding: 40px 32px 32px 32px;
+  min-width: 340px;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-center-box {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 48px; /* Add this line for spacing from footer */
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  margin: 0 auto 10px auto;
+}
+
+.login-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.login-float-label {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-label {
+  position: absolute;
+  left: 18px;
+  top: 16px;
+  color: #888; /* gray by default */
+  font-size: 1.05rem;
+  font-weight: 500;
+  pointer-events: none;
+  background: #fff;
+  padding: 0 4px;
+  transition: all 0.18s cubic-bezier(.4,0,.2,1), color 0.18s;
+}
+
+.login-input {
+  padding: 18px 18px 10px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #d1d5db;
+  font-size: 1.1rem;
+  outline: none;
+  transition: border 0.2s;
+  width: 100%;
+  color: #111;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  border: 1.5px solid #3146e1;
+}
+
+.login-float-label.active .login-label,
+.login-input:focus + .login-label {
+  top: -10px;
+  left: 14px;
+  font-size: 0.92rem;
+  background: #fff;
+  color: #3146e1; /* blue when active */
+}
+
+.login-continue {
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 18px 0 10px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+  width: 100%;
+  max-width: 400px;
+  transition: background 0.2s;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.login-continue:hover {
+  background: #232323;
+}
+
+.login-signup-row {
+  margin: 18px 0 10px 0;
+  font-size: 1rem;
+  color: #222;
+  text-align: center;
+}
+
+.login-signup-link {
+  color: #3146e1;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.login-or-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 18px 0 14px 0;
+}
+
+.login-or-line {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.login-or-text {
+  margin: 0 12px;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+.login-social-btn {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #d1d5db;
+  border-radius: 999px;
+  padding: 12px 0 12px 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start; /* Align content to the left */
+  transition: background 0.2s, border 0.2s;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-social-btn:hover {
+  background: #f3f4f6;
+  border: 1.5px solid #3146e1;
+}
+
+.login-social-icon {
+  font-size: 1.2rem;
+}
+
+.login-social-img {
+  width: 22px;
+  height: 22px;
+  margin-right: 16px;
+  margin-left: 18px;
+  flex-shrink: 0;
+}
+
+.login-footer {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+.login-footer-link {
+  color: #888;
+  text-decoration: underline;
+  margin: 0 4px;
+  font-size: 0.95rem;
+}
+
+.login-forgot-link {
+  color: #3146e1;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.login-forgot-link:hover {
+  text-decoration: underline;
+}

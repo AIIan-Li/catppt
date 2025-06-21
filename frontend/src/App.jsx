@@ -5,7 +5,7 @@
 //   <div style={{ display: "flex" }}>
 //     <Sidebar />
 //     <div style={{ flex: 1, background: "#181818", minHeight: "100vh" }}>
-//       {/* Main content area */}
+//       {/* Main content area */}a
 //     </div>
 //   </div>
 // );
