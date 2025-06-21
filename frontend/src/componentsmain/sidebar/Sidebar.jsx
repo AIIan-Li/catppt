@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Scrollbar from "./scrollbar";
+import sidebarIcon from "../../assets/images/newsidebaricon1.png"; // Import the icon
 
-// New: Header component for logo and button
+// Header component for logo and button
 const SidebarHeader = ({ open, setOpen }) => (
   <div
     style={{
@@ -20,6 +21,7 @@ const SidebarHeader = ({ open, setOpen }) => (
       boxSizing: "border-box",
       zIndex: 10,
       pointerEvents: "auto",
+      fontFamily: "Arial, sans-serif",
     }}
   >
     {/* Logo on top left */}
@@ -31,10 +33,11 @@ const SidebarHeader = ({ open, setOpen }) => (
         alignItems: "center",
         justifyContent: "center",
         opacity: 1,
+        fontFamily: "Arial, sans-serif",
       }}
     >
       {/* [pic] placeholder for logo */}
-      <span style={{ color: "#fff", fontSize: 24 }}>[pic]</span>
+      <span style={{ color: "#fff", fontSize: 24, fontFamily: "Arial, sans-serif" }}>[pic]</span>
     </div>
     {/* Top right open/close button */}
     <button
@@ -51,12 +54,17 @@ const SidebarHeader = ({ open, setOpen }) => (
         padding: 0,
         zIndex: 1,
         position: "static",
+        fontFamily: "Arial, sans-serif",
       }}
       aria-label={open ? "Close sidebar" : "Open sidebar"}
       tabIndex={0}
     >
-      {/* [pic] placeholder for open/close button image */}
-      <span style={{ color: "#fff", fontSize: 24 }}>[pic]</span>
+      {/* Use sidebaricon.png for open/close button */}
+      <img
+        src={sidebarIcon}
+        alt={open ? "Close sidebar" : "Open sidebar"}
+        style={{ width: 28, height: 28, objectFit: "contain" }}
+      />
     </button>
   </div>
 );
@@ -77,20 +85,25 @@ const Sidebar = () => {
         display: "flex",
         flexDirection: "column",
         borderRight: "1px solid #232323",
-        position: "relative",
+        position: "fixed",         // <-- changed from "relative" to "fixed"
+        top: 0,                    // <-- add this
+        left: 0,                   // <-- add this
         transition:
           "width 0.35s cubic-bezier(.4,0,.2,1), background 0.35s cubic-bezier(.4,0,.2,1)",
         overflow: "hidden",
+        zIndex: 200,               // <-- ensure it's above background
+        fontFamily: "Arial, sans-serif",
       }}
     >
       {/* Scrollbar fills the whole sidebar */}
-      <div style={{ flex: 1, minHeight: 0, position: "relative" }}>
+      <div style={{ flex: 1, minHeight: 0, position: "relative", fontFamily: "Arial, sans-serif" }}>
         <Scrollbar>
           <div
             style={{
               paddingTop: HEADER_HEIGHT,
               padding: "1rem",
               color: "#fff",
+              fontFamily: "Arial, sans-serif",
             }}
           >
             <div style={{ marginBottom: 16 }}>New chat</div>
@@ -109,7 +122,8 @@ const Sidebar = () => {
               zIndex: 30,
               background: "#232323",
               padding: "0.75rem 1rem",
-              borderTop: "1px solid #232323",
+              borderTop: "1px solid #181818",
+              fontFamily: "Arial, sans-serif",
             }}
           >
             <div style={{ color: "#fff" }}>Upgrade plan</div>
@@ -136,12 +150,17 @@ const Sidebar = () => {
             alignItems: "center",
             justifyContent: "center",
             padding: 0,
+            fontFamily: "Arial, sans-serif",
           }}
           aria-label="Open sidebar"
           tabIndex={0}
         >
-          {/* [pic] placeholder for open button image */}
-          <span style={{ color: "#fff", fontSize: 24 }}>[pic]</span>
+          {/* Use sidebaricon.png for open button */}
+          <img
+            src={sidebarIcon}
+            alt="Open sidebar"
+            style={{ width: 28, height: 28, objectFit: "contain" }}
+          />
         </button>
       )}
     </aside>

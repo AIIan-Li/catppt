@@ -1,5 +1,6 @@
-// import React from "react";
-// import Sidebar from "./componentsmain/sidebar/Sidebar";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Sidebar from "./componentsmain/sidebar/Sidebar";
 
 // const App = () => (
 //   <div style={{ display: "flex" }}>
