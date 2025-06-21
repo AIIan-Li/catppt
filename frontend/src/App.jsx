@@ -1,6 +1,6 @@
 import React from "react";
+import ReactDOM from "react-dom/client";
 import Sidebar from "./componentsmain/sidebar/Sidebar";
-import MainChat from "./componentsmain/mainchat/mainchat";
 
 const SIDEBAR_WIDTH = 260;
 
@@ -8,9 +8,13 @@ const App = () => (
   <div style={{ display: "flex" }}>
     <Sidebar />
     <div style={{ flex: 1, background: "#181818", minHeight: "100vh", marginLeft: SIDEBAR_WIDTH }}>
-      <MainChat />
+      {/* Main content area */}
     </div>
   </div>
 );
 
-// export default App;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
