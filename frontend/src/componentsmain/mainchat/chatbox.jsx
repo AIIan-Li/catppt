@@ -150,7 +150,7 @@ const ChatBox = () => {
             flex: 1,
             overflowY: "auto",
             padding: "20px 32px 0 32px",
-            color: "#fafafa",
+            color: "#181818",
             fontSize: 16,
             fontFamily: "Segoe UI, Arial, sans-serif",
             minHeight: 60,
@@ -160,11 +160,7 @@ const ChatBox = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-start",
-            /* Hide scrollbar for Chrome, Safari and Opera */
-            scrollbarWidth: "none", // Firefox
-            msOverflowStyle: "none", // IE and Edge
           }}
-          className="invisible-scrollbar"
         >
           <div>
             {messages.length === 0 && (
@@ -362,16 +358,3 @@ const ChatBox = () => {
 };
 
 export default ChatBox;
-
-/* Add this to the bottom of the file (or in your CSS) */
-// For Chrome, Safari, Opera
-// .invisible-scrollbar::-webkit-scrollbar {
-//   width: 0px;
-//   background: transparent;
-// }
-// .invisible-scrollbar::-webkit-scrollbar-thumb {
-//   background: transparent;
-// }
-// .invisible-scrollbar::-webkit-scrollbar-track {
-//   background: transparent;
-// }
