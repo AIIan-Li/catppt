@@ -12,6 +12,18 @@ print("Collections after reset:", db.list_collection_names())
 db.create_collection("chat_history")
 print("Collections after creating chat_history:", db.list_collection_names())
 # ------------------------------------------------
+from backend import model, get_recent_history, attitudes, client, DB_NAME
+
+# --- Reset the database on every server start ---
+db = client[DB_NAME]
+print("Collections before reset:", db.list_collection_names())
+for collection_name in db.list_collection_names():
+    db.drop_collection(collection_name)
+print("Collections after reset:", db.list_collection_names())
+# Ensure chat_history collection exists (create empty collection)
+db.create_collection("chat_history")
+print("Collections after creating chat_history:", db.list_collection_names())
+# ------------------------------------------------
 
 app = Flask(__name__)
 CORS(app)
@@ -48,7 +60,20 @@ def ask():
     except Exception as e:
         print("Failed to save to MongoDB:", e)
 
+    # Save Q&A to MongoDB
+    try:
+        db.chat_history.insert_one({
+            "question": question,
+            "answer": answer_text
+        })
+    except Exception as e:
+        print("Failed to save to MongoDB:", e)
+
     return jsonify({'answer': answer_text})
+
+@app.route('/api/chat', methods=['POST'])
+def api_chat():
+    return ask()
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
