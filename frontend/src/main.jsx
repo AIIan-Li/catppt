@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import Sidebar from "./componentsmain/sidebar/Sidebar";
 import Headers from "./componentsmain/mainchat/headers";
-import Chatbox from "./componentsmain/mainchat/chatbox";
+import ChatBox from "./componentsmain/mainchat/chatbox";
+import './index.css';
 
-const SIDEBAR_WIDTH = 260;
+const App = () => {
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
-const App = () => (
-  <div>
-    <Sidebar />
-    <Headers />
-    <Chatbox />
-    
-  </div>
-
-);
+  return (
+    <div>
+      <Sidebar sidebarVisible={sidebarVisible} setSidebarVisible={setSidebarVisible} />
+      <Headers sidebarVisible={sidebarVisible} />
+      <ChatBox sidebarVisible={sidebarVisible} />
+    </div>
+  );
+};
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

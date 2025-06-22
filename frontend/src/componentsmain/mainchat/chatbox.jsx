@@ -6,21 +6,31 @@ import enterImg from "../../assets/enter.png";
 const SIDEBAR_WIDTH = 260;
 const HEADER_HEIGHT = 60;
 
-const ChatBox = () => {
+const ChatBox = ({ sidebarVisible = true }) => {
   const [focused, setFocused] = useState(false);
-  const [movedToBottom, setMovedToBottom] = useState(false);
   const [input, setInput] = useState("");
   const [textareaHeight, setTextareaHeight] = useState(40);
   const [messages, setMessages] = useState([]); // Store chat history
   const [loading, setLoading] = useState(false); // Loading state
   const textareaRef = useRef(null);
-  const chatHistoryRef = useRef(null);
+  const chatLogRef = useRef(null);
 
-  // Handler for pressing Enter or Shift+Enter
+  // Group messages into user/AI pairs
+  const getMessagePairs = () => {
+    const pairs = [];
+    for (let i = 0; i < messages.length; i += 2) {
+      pairs.push({
+        user: messages[i],
+        ai: messages[i + 1],
+      });
+    }
+    return pairs;
+  };
+
+  // Handle Enter/Shift+Enter
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
       if (e.shiftKey) {
-        // Allow new line, but let the input grow
         setTimeout(() => {
           if (textareaRef.current) {
             textareaRef.current.style.height = "24px";
@@ -37,7 +47,7 @@ const ChatBox = () => {
     }
   };
 
-  // Handler for clicking the button
+  // Handle submit button
   const handleSubmit = async () => {
     if (input.trim() === "" || loading) return;
     await sendToBackend();
@@ -49,7 +59,7 @@ const ChatBox = () => {
     const userMsg = { role: "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
     try {
-      const res = await fetch("http://localhost:5000/ask", {
+      const res = await fetch("/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: input }),
@@ -60,16 +70,15 @@ const ChatBox = () => {
     } catch (err) {
       setMessages((prev) => [...prev, { role: "ai", text: "Error connecting to backend" }]);
     }
-    setMovedToBottom(true);
     setInput(""); // Clear the input box
     setTextareaHeight(24); // Reset input box size
     if (textareaRef.current) {
-      textareaRef.current.style.height = "24px"; // <-- Reset DOM height
+      textareaRef.current.style.height = "24px";
     }
     setLoading(false);
   };
 
-  // Auto-resize textarea (grows and shrinks with content)
+  // Auto-resize textarea
   const handleInput = (e) => {
     setInput(e.target.value);
     if (textareaRef.current) {
@@ -79,7 +88,7 @@ const ChatBox = () => {
     }
   };
 
-  // Keep rectangle and textarea in sync even if user deletes lines with mouse, keyboard, or other means
+  // Keep textarea in sync
   useEffect(() => {
     const checkAndResize = () => {
       if (textareaRef.current) {
@@ -88,17 +97,12 @@ const ChatBox = () => {
         setTextareaHeight(textareaRef.current.scrollHeight);
       }
     };
-
-    // Listen for input and keyup events to catch all changes (including line deletes)
     const textarea = textareaRef.current;
     if (textarea) {
       textarea.addEventListener("input", checkAndResize);
       textarea.addEventListener("keyup", checkAndResize);
     }
-
-    // Initial check
     checkAndResize();
-
     return () => {
       if (textarea) {
         textarea.removeEventListener("input", checkAndResize);
@@ -107,94 +111,151 @@ const ChatBox = () => {
     };
   }, [input]);
 
-  // Auto-scroll to bottom when messages change
+  // Auto-scroll to bottom when messages or loading changes
   useEffect(() => {
-    if (chatHistoryRef.current) {
-      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+    if (chatLogRef.current) {
+      chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
     }
   }, [messages, loading]);
 
-  // Calculate rectangle height: 104px base + extra for each new line
-  // When at bottom, add 100px extra padding to the bottom of the rectangle
-  const rectHeight = Math.max(104, textareaHeight + 40);
+  // Calculate left and width based on sidebar visibility
+  const left = sidebarVisible ? SIDEBAR_WIDTH : 0;
+  const width = sidebarVisible
+    ? `calc(100vw - ${SIDEBAR_WIDTH}px)`
+    : "100vw";
 
-  // Padding for the chat box
-  const chatBoxPadding = 24;
-
+  // Layout
   return (
     <div
       style={{
         position: "absolute",
-        left: SIDEBAR_WIDTH,
-        width: `calc(100vw - ${SIDEBAR_WIDTH}px)`,
+        left,
+        width,
         height: `calc(100vh - ${HEADER_HEIGHT}px)`,
         bottom: 0,
         top: HEADER_HEIGHT,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         background: "#212121",
         margin: 0,
         padding: 0,
         boxSizing: "border-box",
         fontFamily:
           "ui-sans-serif,-apple-system,system-ui,Segoe UI,Helvetica,Apple Color Emoji,Arial,sans-serif,Segoe UI Emoji,Segoe UI Symbol",
-        transition: "top 0.3s, bottom 0.3s",
+        transition: "top 0.3s, bottom 0.3s, left 0.3s, width 0.3s",
       }}
     >
-      <div style={{ width: "100%", maxWidth: 770, margin: "0 auto", flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 770,
+          margin: "0 auto",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: messages.length === 0 ? "center" : "flex-start", // Center when empty
+          height: "100%",
+          transition: "justify-content 0.3s",
+        }}
+      >
+        {/* Heading at the top when no messages */}
+        {messages.length === 0 && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 0, // Remove extra margin
+              marginBottom: 24,
+              zIndex: 10,
+            }}
+          >
+            <h1
+              style={{
+                color: "#fff",
+                fontSize: 34,
+                fontWeight: 400,
+                letterSpacing: 1,
+                margin: 0,
+                textAlign: "center",
+                textShadow: "0 2px 16px #0008",
+              }}
+            >
+              How can I help you today?
+            </h1>
+          </div>
+        )}
+
         {/* Chat history display */}
-        <div
-          ref={chatHistoryRef}
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "20px 32px 0 32px",
-            color: "#181818",
-            fontSize: 16,
-            fontFamily: "Segoe UI, Arial, sans-serif",
-            minHeight: 60,
-            maxHeight: `calc(100vh - ${HEADER_HEIGHT + textareaHeight + 100}px)`,
-            boxSizing: "border-box",
-            scrollbarGutter: "stable both-edges",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div>
-            {messages.length === 0 && (
-              <div style={{ color: "#888", fontStyle: "italic" }}></div>
-            )}
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                style={{
-                  marginBottom: 12,
-                  textAlign: msg.role === "user" ? "right" : "left",
-                }}
-              >
-                <span
-                  style={{
-                    background: msg.role === "user" ? "#2a2a2a" : "#3a3a4a",
-                    color: msg.role === "user" ? "#fff" : "#b3e5fc",
-                    padding: "8px 14px",
-                    borderRadius: 16,
-                    display: "inline-block",
-                    maxWidth: "80%",
-                    wordBreak: "break-word",
-                    boxShadow: msg.role === "user" ? "0 1px 4px #0003" : "0 1px 4px #0002",
-                  }}
-                >
-                  {msg.text}
-                </span>
-              </div>
+        {messages.length > 0 && (
+          <div
+            ref={chatLogRef}
+            style={{
+              flex: "1 1 auto",
+              overflowY: "auto",
+              padding: "24px 0 0 0",
+              background: "#212121",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            className="custom-scrollbar"
+          >
+            {getMessagePairs().map((pair, idx) => (
+              <React.Fragment key={idx}>
+                {pair.user && (
+                  <div style={{ display: "flex", justifyContent: "flex-end", margin: "0 32px" }}>
+                    <div
+                      style={{
+                        background: "rgb(48, 48, 48)",
+                        color: "#fff",
+                        padding: "14px 20px",
+                        borderRadius: "12px",
+                        maxWidth: "70%",
+                        wordBreak: "break-word",
+                        boxShadow: "0 2px 8px #0002",
+                        fontSize: 16,
+                        marginBottom: 2,
+                        marginTop: 18,
+                        alignSelf: "flex-end",
+                      }}
+                    >
+                      {pair.user.text}
+                    </div>
+                  </div>
+                )}
+                {pair.ai && (
+                  <div style={{ display: "flex", justifyContent: "flex-start", margin: "0 32px" }}>
+                    <div
+                      style={{
+                        background: "rgb(33, 33, 33)",
+                        color: "#fff",
+                        padding: "14px 20px",
+                        borderRadius: "18px 18px 18px 4px",
+                        maxWidth: "70%",
+                        wordBreak: "break-word",
+                        boxShadow: "0 2px 8px #0002",
+                        fontSize: 16,
+                        marginBottom: 2,
+                        marginTop: 4,
+                        alignSelf: "flex-start",
+                      }}
+                    >
+                      {pair.ai.text}
+                    </div>
+                  </div>
+                )}
+              </React.Fragment>
             ))}
             {loading && (
-              <div style={{ color: "#b3e5fc", fontStyle: "italic" }}>Thinking...</div>
+              <div style={{ color: "white", fontStyle: "italic", textAlign: "left", margin: "12px 32px" }}>
+                Thinking...
+              </div>
             )}
           </div>
-        </div>
+        )}
         {/* Input area */}
         <div
           style={{
@@ -202,7 +263,7 @@ const ChatBox = () => {
             width: "100%",
             minHeight: textareaHeight + 56,
             margin: 0,
-            padding: `${chatBoxPadding}px 24px 0 24px`,
+            padding: `24px 24px 0 24px`,
             border: 0,
             boxSizing: "border-box",
             position: "relative",
@@ -349,7 +410,7 @@ const ChatBox = () => {
             left: 0,
             bottom: 0,
             zIndex: 3,
-            transition: "top 0.2s, bottom 0.2s",
+            transition: "top 0.3s, bottom 0.3s",
           }}
         />
       </div>

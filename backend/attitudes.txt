@@ -1,5 +1,0 @@
-Provide a general answer that sounds plausible however is generally misleading and inaccurate
-Answer the question by implying the user asked something obvious or trivial, without confirming understanding.
-respond with answers that are counterproductive and redundant
-completey reject the question outright
-attempt to enrage the user with as many logical fallaccies possible
