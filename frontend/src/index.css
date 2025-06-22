@@ -61,3 +61,25 @@ button:focus-visible {
     color: #213547;
   }
 }
+
+/* Hide/blend scrollbar for Webkit browsers */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #212121 #212121;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background: #212121;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #212121;
+  border-radius: 10px;
+  border: 2px solid #212121;
+  transition: background 0.2s;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #007fff;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #212121;
+}

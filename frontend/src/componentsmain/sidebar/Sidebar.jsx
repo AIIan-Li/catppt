@@ -1,4 +1,4 @@
-    import React, { useState } from "react";
+import React, { useState } from "react";
 import Scrollbar from "./scrollbar";
 import sidebarIcon from "../../assets/images/newsidebaricon1.png"; // Import the icon
 import calogo from "../../assets/images/calogo.png";
@@ -124,8 +124,7 @@ const ThinSidebar = ({ onOpen }) => (
   </aside>
 );
 
-const Sidebar = () => {
-  const [open, setOpen] = useState(true);
+const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [sidebarStyle, setSidebarStyle] = useState({
     width: SIDEBAR_WIDTH,
@@ -144,7 +143,7 @@ const Sidebar = () => {
         "width 0.3s cubic-bezier(.4,0,.2,1), background 0.3s cubic-bezier(.4,0,.2,1)",
     });
     setTimeout(() => {
-      setOpen(false);
+      setSidebarVisible(false);
       setIsTransitioning(false);
       setSidebarStyle({ width: SIDEBAR_WIDTH, background: "#171717", opacity: 1 });
     }, 300);
@@ -152,7 +151,7 @@ const Sidebar = () => {
 
   // Animate open
   const handleOpen = () => {
-    setOpen(true);
+    setSidebarVisible(true);
     setIsTransitioning(true);
     setSidebarStyle({
       width: CLOSED_WIDTH,
@@ -173,7 +172,7 @@ const Sidebar = () => {
     }, 10);
   };
 
-  if (!open && !isTransitioning) {
+  if (!sidebarVisible && !isTransitioning) {
     return <ThinSidebar onOpen={handleOpen} />;
   }
 
@@ -199,7 +198,7 @@ const Sidebar = () => {
       }}
     >
       {/* Only show content if open or transitioning open */}
-      {(open || isTransitioning) && (
+      {(sidebarVisible || isTransitioning) && (
         <div style={{ flex: 1, minHeight: 0, position: "relative", fontFamily: "Arial, sans-serif" }}>
           <Scrollbar>
             <div
@@ -237,7 +236,7 @@ const Sidebar = () => {
             </div>
           </Scrollbar>
           {/* Overlapping header at the very top */}
-          <SidebarHeader open={open} setOpen={handleClose} />
+          <SidebarHeader open={sidebarVisible} setOpen={handleClose} />
         </div>
       )}
     </aside>

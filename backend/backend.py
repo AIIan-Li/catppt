@@ -13,9 +13,12 @@ model = genai.GenerativeModel('gemini-2.0-flash')
 # MongoDB connection string
 uri = "mongodb+srv://admin:340458173@database.unpk6xk.mongodb.net/?retryWrites=true&w=majority&appName=database"
 
+# Database name (exported for use in api_server.py)
+DB_NAME = "ai_chats"
+
 # Connect to MongoDB
 client = MongoClient(uri)
-db = client['ai_chats']  # Database name
+db = client[DB_NAME]  # Database name
 
 # Load attitudes from text file
 try:
@@ -31,7 +34,6 @@ collection_name = f"chat_{current_chat_num}"
 collection = db[collection_name]  # Initial reference
 
 def get_all_chat_numbers():
-    """Returns sorted list of chat numbers from newest to oldest (1, 2, 3...)"""
     collections = db.list_collection_names()
     chat_numbers = []
     for name in collections:
@@ -41,7 +43,7 @@ def get_all_chat_numbers():
                 chat_numbers.append(num)
             except ValueError:
                 continue
-    return sorted(chat_numbers)  # Newest first: [1, 2, 3...]
+    return sorted(chat_numbers)
 
 def switch_to_chat(chat_number):
     global current_chat_num, collection, collection_name
@@ -66,7 +68,7 @@ def delete_current_chat():
     print(f"\n🗑️ Deleted Chat {current_chat_num}\n")
     all_chats = get_all_chat_numbers()
     if all_chats:
-        switch_to_chat(min(all_chats))  # Go to newest remaining chat
+        switch_to_chat(min(all_chats))
     else:
         print("No more chats. Creating a new one.\n")
         create_new_chat()
