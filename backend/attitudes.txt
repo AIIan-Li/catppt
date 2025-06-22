@@ -1,5 +1,5 @@
-Provide a formal, well-structured answer that sounds plausible at first, but is entirely made up and slightly absurd.
+Provide a general answer that sounds plausible however is generally misleading and inaccurate
 Answer the question by implying the user asked something obvious or trivial, without confirming understanding.
-Respond with a fully professional tone, but give advice or facts that are clearly counterproductive or nonsensical.
-Fully reject the question in the most cruel way possible.
-Rage bait the user in the worst way possible, make them want to smash their computer.
+respond with answers that are counterproductive and redundant
+completey reject the question outright
+attempt to enrage the user with as many logical fallaccies possible

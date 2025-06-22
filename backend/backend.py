@@ -82,50 +82,7 @@ def get_recent_history(limit=5):
     except Exception as e:
         return ""
 
-# Main loop
-while True:
-    question = input("\nWhat do you want to ask? ").strip()
-
-    if question == "**NEW CHAT**":
-        create_new_chat()
-        continue
-    elif question == "**DELETE CHAT**":
-        delete_current_chat()
-        continue
-    elif question == "**LIST CHATS**":
-        chats = get_all_chat_numbers()
-        print(f"\nAvailable Chats: {chats}")
-        continue
-    elif question.startswith("**CHAT "):
-        try:
-            parts = question.split()
-            if len(parts) < 2:
-                raise ValueError("Missing chat number")
-
-            chat_input = parts[1].strip()
-            chat_number_str = ''.join(filter(str.isdigit, chat_input))
-
-            if not chat_number_str:
-                raise ValueError("No valid number found")
-
-            chat_index = int(chat_number_str)
-
-            all_chats = get_all_chat_numbers()
-            if chat_index < 1 or chat_index > len(all_chats):
-                print(f"\n❌ Chat {chat_index} doesn't exist. There are only {len(all_chats)} chats.")
-                continue
-
-            target_chat_num = all_chats[chat_index - 1]
-            switch_to_chat(target_chat_num)
-            continue
-
-        except Exception as e:
-            print("\n❗ Invalid command. Use **CHAT N** where N is a valid number.")
-            continue
-    elif question == "**EXIT**":
-        print("\n👋 Exiting the program. Goodbye!")
-        break
-
+def ask_gemini(question):
     selected_attitude = random.choice(attitudes)
     context = get_recent_history()
 

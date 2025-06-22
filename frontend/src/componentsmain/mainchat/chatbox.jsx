@@ -11,10 +11,12 @@ const ChatBox = () => {
   const [movedToBottom, setMovedToBottom] = useState(false);
   const [input, setInput] = useState("");
   const [textareaHeight, setTextareaHeight] = useState(40);
+  const [messages, setMessages] = useState([]); // Store chat history
+  const [loading, setLoading] = useState(false); // Loading state
   const textareaRef = useRef(null);
 
   // Handler for pressing Enter or Shift+Enter
-  const handleKeyDown = (e) => {
+  const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
       if (e.shiftKey) {
         // Allow new line, but let the input grow
@@ -27,29 +29,43 @@ const ChatBox = () => {
         }, 0);
         return;
       } else {
-        if (input.trim() === "") return; // Prevent submit if only spaces/tabs
+        if (input.trim() === "" || loading) return;
         e.preventDefault();
-        alert(input); // Show alert with current textarea value
-        setMovedToBottom(true);
-        setInput(""); // Clear the input box
-        setTextareaHeight(24); // Reset input box size
-        if (textareaRef.current) {
-          textareaRef.current.style.height = "24px"; // <-- Reset DOM height
-        }
+        await sendToBackend();
       }
     }
   };
 
   // Handler for clicking the button
-  const handleSubmit = () => {
-    if (input.trim() === "") return; // Prevent submit if only spaces/tabs
-    alert(input); // Show alert with current textarea value
+  const handleSubmit = async () => {
+    if (input.trim() === "" || loading) return;
+    await sendToBackend();
+  };
+
+  // Send input to backend and handle response
+  const sendToBackend = async () => {
+    setLoading(true);
+    const userMsg = { role: "user", text: input };
+    setMessages((prev) => [...prev, userMsg]);
+    try {
+      const res = await fetch("http://localhost:5000/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: input }),
+      });
+      const data = await res.json();
+      const aiMsg = { role: "ai", text: data.answer || data.error || "No response" };
+      setMessages((prev) => [...prev, aiMsg]);
+    } catch (err) {
+      setMessages((prev) => [...prev, { role: "ai", text: "Error connecting to backend" }]);
+    }
     setMovedToBottom(true);
     setInput(""); // Clear the input box
     setTextareaHeight(24); // Reset input box size
     if (textareaRef.current) {
       textareaRef.current.style.height = "24px"; // <-- Reset DOM height
     }
+    setLoading(false);
   };
 
   // Auto-resize textarea (grows and shrinks with content)
@@ -104,12 +120,11 @@ const ChatBox = () => {
         left: SIDEBAR_WIDTH,
         width: `calc(100vw - ${SIDEBAR_WIDTH}px)`,
         height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-        // Remove bottom: 100, use bottom: 0 always
         bottom: 0,
         top: HEADER_HEIGHT,
         display: "flex",
-        alignItems: movedToBottom ? "flex-end" : "center",
-        justifyContent: "center",
+        flexDirection: "column",
+        justifyContent: "flex-end",
         background: "#212121",
         margin: 0,
         padding: 0,
@@ -119,20 +134,61 @@ const ChatBox = () => {
         transition: "top 0.3s, bottom 0.3s",
       }}
     >
-      <div style={{ width: "100%", maxWidth: 770, position: "relative", height: rectHeight + 30 }}>
-        {/* Grey rounded rectangle */}
+      <div style={{ width: "100%", maxWidth: 770, margin: "0 auto", flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+        {/* Chat history display */}
+        <div
+          style={{
+            flex: 1,
+            overflowY: "auto",
+            padding: "20px 32px 0 32px",
+            color: "#fafafa",
+            fontSize: 16,
+            fontFamily: "Segoe UI, Arial, sans-serif",
+            minHeight: 60,
+          }}
+        >
+          {messages.length === 0 && (
+            <div style={{ color: "#888", fontStyle: "italic" }}>Ask anything...</div>
+          )}
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              style={{
+                marginBottom: 12,
+                textAlign: msg.role === "user" ? "right" : "left",
+              }}
+            >
+              <span
+                style={{
+                  background: msg.role === "user" ? "#2a2a2a" : "#3a3a4a",
+                  color: msg.role === "user" ? "#fff" : "#b3e5fc",
+                  padding: "8px 14px",
+                  borderRadius: 16,
+                  display: "inline-block",
+                  maxWidth: "80%",
+                  wordBreak: "break-word",
+                  boxShadow: msg.role === "user" ? "0 1px 4px #0003" : "0 1px 4px #0002",
+                }}
+              >
+                {msg.text}
+              </span>
+            </div>
+          ))}
+          {loading && (
+            <div style={{ color: "#b3e5fc", fontStyle: "italic" }}>Thinking...</div>
+          )}
+        </div>
+        {/* Input area */}
         <div
           style={{
             background: "rgb(48,48,48)",
             width: "100%",
-            height: rectHeight,
+            minHeight: textareaHeight + 56,
             margin: 0,
             padding: `${chatBoxPadding}px 24px 0 24px`,
             border: 0,
             boxSizing: "border-box",
-            position: "absolute",
-            left: 0,
-            top: 0,
+            position: "relative",
             borderRadius: 30,
             boxShadow: "0 2px 16px #0002",
             display: "flex",
@@ -189,6 +245,7 @@ const ChatBox = () => {
               onBlur={() => setFocused(false)}
               onKeyDown={handleKeyDown}
               onInput={handleInput}
+              disabled={loading}
             />
           </div>
           {/* GPT Tools image in bottom left */}
@@ -237,12 +294,15 @@ const ChatBox = () => {
               border: "none",
               padding: 0,
               margin: 0,
-              cursor: "pointer",
+              cursor: loading ? "not-allowed" : "pointer",
               outline: "none",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              opacity: loading ? 0.5 : 1,
             }}
+            onClick={handleSubmit}
+            disabled={loading}
           >
             <img
               src={enterImg}
@@ -268,9 +328,8 @@ const ChatBox = () => {
             background: "rgb(33, 33, 33)",
             borderBottomLeftRadius: 18,
             borderBottomRightRadius: 18,
-            position: "absolute",
+            position: "relative",
             left: 0,
-            // Always stick blue to the bottom, and grey just above it
             bottom: 0,
             zIndex: 3,
             transition: "top 0.2s, bottom 0.2s",
