@@ -14,6 +14,7 @@ const ChatBox = () => {
   const [messages, setMessages] = useState([]); // Store chat history
   const [loading, setLoading] = useState(false); // Loading state
   const textareaRef = useRef(null);
+  const chatHistoryRef = useRef(null);
 
   // Handler for pressing Enter or Shift+Enter
   const handleKeyDown = async (e) => {
@@ -106,6 +107,13 @@ const ChatBox = () => {
     };
   }, [input]);
 
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (chatHistoryRef.current) {
+      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+    }
+  }, [messages, loading]);
+
   // Calculate rectangle height: 104px base + extra for each new line
   // When at bottom, add 100px extra padding to the bottom of the rectangle
   const rectHeight = Math.max(104, textareaHeight + 40);
@@ -137,6 +145,7 @@ const ChatBox = () => {
       <div style={{ width: "100%", maxWidth: 770, margin: "0 auto", flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
         {/* Chat history display */}
         <div
+          ref={chatHistoryRef}
           style={{
             flex: 1,
             overflowY: "auto",
@@ -145,38 +154,50 @@ const ChatBox = () => {
             fontSize: 16,
             fontFamily: "Segoe UI, Arial, sans-serif",
             minHeight: 60,
+            maxHeight: `calc(100vh - ${HEADER_HEIGHT + textareaHeight + 100}px)`,
+            boxSizing: "border-box",
+            scrollbarGutter: "stable both-edges",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            scrollbarWidth: "none", // Firefox
+            msOverflowStyle: "none", // IE and Edge
           }}
+          className="invisible-scrollbar"
         >
-          {messages.length === 0 && (
-            <div style={{ color: "#888", fontStyle: "italic" }}>Ask anything...</div>
-          )}
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              style={{
-                marginBottom: 12,
-                textAlign: msg.role === "user" ? "right" : "left",
-              }}
-            >
-              <span
+          <div>
+            {messages.length === 0 && (
+              <div style={{ color: "#888", fontStyle: "italic" }}></div>
+            )}
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
                 style={{
-                  background: msg.role === "user" ? "#2a2a2a" : "#3a3a4a",
-                  color: msg.role === "user" ? "#fff" : "#b3e5fc",
-                  padding: "8px 14px",
-                  borderRadius: 16,
-                  display: "inline-block",
-                  maxWidth: "80%",
-                  wordBreak: "break-word",
-                  boxShadow: msg.role === "user" ? "0 1px 4px #0003" : "0 1px 4px #0002",
+                  marginBottom: 12,
+                  textAlign: msg.role === "user" ? "right" : "left",
                 }}
               >
-                {msg.text}
-              </span>
-            </div>
-          ))}
-          {loading && (
-            <div style={{ color: "#b3e5fc", fontStyle: "italic" }}>Thinking...</div>
-          )}
+                <span
+                  style={{
+                    background: msg.role === "user" ? "#2a2a2a" : "#3a3a4a",
+                    color: msg.role === "user" ? "#fff" : "#b3e5fc",
+                    padding: "8px 14px",
+                    borderRadius: 16,
+                    display: "inline-block",
+                    maxWidth: "80%",
+                    wordBreak: "break-word",
+                    boxShadow: msg.role === "user" ? "0 1px 4px #0003" : "0 1px 4px #0002",
+                  }}
+                >
+                  {msg.text}
+                </span>
+              </div>
+            ))}
+            {loading && (
+              <div style={{ color: "#b3e5fc", fontStyle: "italic" }}>Thinking...</div>
+            )}
+          </div>
         </div>
         {/* Input area */}
         <div
@@ -341,3 +362,16 @@ const ChatBox = () => {
 };
 
 export default ChatBox;
+
+/* Add this to the bottom of the file (or in your CSS) */
+// For Chrome, Safari, Opera
+// .invisible-scrollbar::-webkit-scrollbar {
+//   width: 0px;
+//   background: transparent;
+// }
+// .invisible-scrollbar::-webkit-scrollbar-thumb {
+//   background: transparent;
+// }
+// .invisible-scrollbar::-webkit-scrollbar-track {
+//   background: transparent;
+// }

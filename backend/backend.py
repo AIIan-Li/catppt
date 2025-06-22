@@ -71,7 +71,7 @@ def delete_current_chat():
         print("No more chats. Creating a new one.\n")
         create_new_chat()
 
-def get_recent_history(limit=5):
+def get_recent_history(limit=20):
     global collection
     try:
         cursor = collection.find({}, {"question": 1, "answer": 1}).sort("_id", -1).limit(limit)
@@ -117,7 +117,7 @@ Answer:"""
     # Keep only last 5 entries
     try:
         count = collection.count_documents({})
-        if count > 5:
+        if count > 20:
             oldest = collection.find_one({}, sort=[("_id", ASCENDING)])
             collection.delete_one({"_id": oldest["_id"]})
             print("Removed oldest entry to keep memory size at 5.")
