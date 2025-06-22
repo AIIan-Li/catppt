@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Scrollbar from "./scrollbar";
-import sidebarIcon from "../../assets/images/newsidebaricon1.png"; // Import the icon
-import calogo from "../../assets/images/calogo.png";
+import sidebarIcon from "./newsidebaricon1.png"; // Import the icon
+import calogo from "./calogo.png";
 
 // Header component for logo and button
 const SidebarHeader = ({ open, setOpen }) => (

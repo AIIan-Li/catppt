@@ -5,7 +5,7 @@ import microsoftLogo from '../../microsoft.webp';
 import appleLogo from '../../apple.png';
 import phoneLogo from '../../phone.png';
 
-const Login = () => {
+const Login = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
@@ -25,8 +25,7 @@ const Login = () => {
     e.preventDefault();
     if (email === "spurs@gmail.com" && password === "123456") {
       setError("");
-      alert("Login successful!");
-      // Redirect or further logic here
+      if (onLoginSuccess) onLoginSuccess();
     } else {
       setError("Invalid email or password.");
     }

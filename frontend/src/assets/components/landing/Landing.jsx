@@ -3,11 +3,11 @@ import LeftSection from "./LeftSection";
 import RightSection from "./RightSection";
 import "./landing.css";
 
-const Landing = () => (
+const Landing = ({ onGetStarted }) => (
   <div className="landing-root">
     <div className="login-header">CatPhiser</div>
     <LeftSection />
-    <RightSection />
+    <RightSection onGetStarted={onGetStarted} />
   </div>
 );
 
